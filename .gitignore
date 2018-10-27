@@ -103,6 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 Kiosk.pyproj
+.idea/
 
 # node modules
 client/node_modules
