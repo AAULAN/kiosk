@@ -1,5 +1,5 @@
 from flask import Blueprint, abort, jsonify, request
-from database import get_db_products, add_db_products, delete_db_products, update_db_products
+from database import get_db_products, add_db_product, delete_db_product, update_db_products
 from numbers import Number
 
 product_blueprint = Blueprint('product', __name__, url_prefix='/kiosk/api/v1.0/products')
@@ -19,10 +19,10 @@ def create_product():
         'name': request.json['name'],
         'category': request.json.get('category', ''),
         'price': request.json['price'],
-        'active': True
+        'active': request.json.get('active', False)
     }
 
-    add_db_products(product)
+    add_db_product(product)
     return jsonify({'result': 'success'}), 201
 
 
@@ -75,5 +75,5 @@ def delete_product(product_id):
     product = get_db_products(product_id=product_id)
     if not product:
         abort(404)
-    delete_db_products(product)
+    delete_db_product(product_id)
     return jsonify({'result': 'success'})

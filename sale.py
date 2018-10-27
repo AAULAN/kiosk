@@ -42,3 +42,14 @@ def get_sale_count(product_id):
         count += product.serialize['amount']
 
     return jsonify({'product': product_id, 'count': count})
+
+
+@sale_blueprint.route('/<int:sale_id>', methods=['DELETE'])
+def delete_sale(sale_id):
+    sale = get_db_sales(sale_id)
+
+    if not sale:
+        abort(404)
+
+    delete_sale(sale_id)
+    return jsonify({'result': 'success'})
