@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiBase: 'http://127.0.0.1:5000/kiosk/api/v1.0'
+  apiBase: 'http://127.0.0.1:5000/kiosk/api/v1.0',
+  key: 'test'
 };
 
 /*

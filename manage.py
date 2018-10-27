@@ -1,5 +1,6 @@
 from flask import make_response, jsonify
 from flask_script import Manager
+from flask_cors import CORS
 from __init__ import create_app
 import product, sale, category
 
@@ -9,7 +10,7 @@ app.register_blueprint(product.product_blueprint)
 app.register_blueprint(sale.sale_blueprint)
 app.register_blueprint(category.category_blueprint)
 app.app_context().push()
-
+CORS(app)
 
 @app.errorhandler(400)
 def bad_request(error):

@@ -8,8 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProductsOverviewComponent } from './component/products-overview/products-overview.component';
 import { ProductDetailsComponent } from './component/product-details/product-details.component';
 
-import { MatTableModule, MatButtonModule, MatIconModule, MatToolbarModule, MatCardModule } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule, MatButtonModule, MatIconModule, MatToolbarModule, MatCardModule, MatSnackBarModule } from '@angular/material';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { KeyInterceptor } from './interceptor/key.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,9 +26,10 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatToolbarModule,
     MatCardModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: KeyInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
