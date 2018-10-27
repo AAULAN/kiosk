@@ -22,6 +22,7 @@ class Product(db.Model):
 class Sale(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
     payment = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.TIMESTAMP, nullable=False)
 
@@ -30,6 +31,7 @@ class Sale(db.Model):
         return {
             'id': self.id,
             'product': self.product,
+            'amount': self.amount,
             'payment': self.payment,
             'timestamp': self.timestamp
         }
@@ -82,22 +84,35 @@ def get_db_products(product_id=None, category=None):
             return Product.query.filter_by(category=category).all()
 
 
-def get_db_product_categories(filter_by=None):
+def get_db_product_categories():
     categories = list()
-    products = get_db_products(filter_by)
-    for product in products:
+    for product in get_db_products():
         if product.category not in categories:
             categories.append(product.category)
     return categories
 
 
 def add_db_sales(sales):
-    [db.session.add(sale) for sale in sales]
+    if type(sales) is dict:
+        new_sale = Sale()
+        new_sale.product = sales['product']
+        new_sale.amount = sales['amount']
+        new_sale.payment = sales['payment']
+        new_sale.timestamp = sales['timestamp']
+        db.session.add(new_sale)
+    else:
+        for sale in sales:
+            new_sale = Sale()
+            new_sale.product = sale['product']
+            new_sale.amount = sale['amount']
+            new_sale.payment = sale['payment']
+            new_sale.timestamp = sale['timestamp']
+            db.session.add(new_sale)
     db.session.commit()
 
 
-def get_db_sales(sale_id=None):
-    if not sale_id:
+def get_db_sales(product_id=None):
+    if not product_id:
         return Sale.query.all()
     else:
-        return Sale.quert.filter_by(id=sale_id).first()
+        return Sale.query.filter_by(product=product_id).all()

@@ -23,7 +23,7 @@ def create_product():
     #check_duplicate(product)
 
     add_db_products(product)
-    return jsonify(product), 201
+    return jsonify({'result': 'success'}), 201
 
 
 @product_blueprint.route('/<int:product_id>', methods=['GET'])
