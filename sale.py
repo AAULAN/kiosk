@@ -23,7 +23,7 @@ def add_sale():
         'product': request.json['product'],
         'amount': request.json['amount'],
         'payment': product['price'] * request.json['amount'],
-        'timestamp': datetime.now()
+        'timestamp': datetime.utcnow()
     }
 
     add_db_sales(sale)

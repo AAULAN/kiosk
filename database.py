@@ -1,4 +1,4 @@
-from sqlalchemy import asc
+from sqlalchemy import asc, desc
 
 from __init__ import db
 
@@ -77,7 +77,7 @@ def update_db_products(product_id, new_product):
 
 def get_db_products(product_id=None, category=None):
     if not product_id and not category:
-        return Product.query.all()
+        return Product.query.order_by(Product.category.asc(), Product.name.asc()).all()
     else:
         if product_id:
             return Product.query.filter_by(id=product_id).first()
@@ -116,9 +116,9 @@ def get_db_sales(sale_id=None, product_id=None):
     if sale_id:
         return Sale.query.filter_by(id=sale_id).first()
     if not product_id:
-        return Sale.query.order_by(asc(Sale.timestamp)).all()
+        return Sale.query.order_by(Sale.timestamp.desc()).all()
     else:
-        return Sale.query.order_by(asc(Sale.timestamp)).filter_by(product=product_id).all()
+        return Sale.query.filter_by(product=product_id).all()
 
 
 def delete_db_sales(sale_id=None):
