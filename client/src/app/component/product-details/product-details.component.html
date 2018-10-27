@@ -1,0 +1,20 @@
+<form #productForm="ngForm" (ngSubmit)="submit()">
+  <mat-form-field class="product-form">
+    <input matInput placeholder="Name" [(value)]="product.name" required>
+  </mat-form-field>
+
+  <mat-form-field class="product-form">
+    <input matInput placeholder="Category" [(value)]="product.category" required>
+  </mat-form-field>
+
+  <mat-form-field class="product-form">
+    <input matInput placeholder="Price" [(value)]="product.price" required>
+  </mat-form-field>
+
+  <mat-checkbox [(checked)]="product.active">Active</mat-checkbox>
+
+  <p>
+    <button type="submit" mat-raised-button color="primary">Save product</button>
+  </p>
+</form>
+

@@ -108,3 +108,6 @@ Kiosk.pyproj
 
 # Don't spoil the fun :D
 secrets.py
+
+# node modules
+client/node_modules

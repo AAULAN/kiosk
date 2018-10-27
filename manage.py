@@ -14,7 +14,6 @@ app.register_blueprint(category_blueprint)
 app.app_context().push()
 CORS(app)
 
-
 @app.errorhandler(400)
 def bad_request(error):
     return make_response(jsonify({'error': 'Bad Request'}), 400)

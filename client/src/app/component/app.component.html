@@ -1,0 +1,9 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Products</span>
+    <span class="spacer"></span>
+    <mat-icon class="example-icon" (click)="createProduct()">add</mat-icon>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<app-products-overview (selectProduct)="selectProduct($event)"></app-products-overview>
