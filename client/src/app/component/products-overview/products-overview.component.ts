@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./products-overview.component.scss']
 })
 export class ProductsOverviewComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['name', 'category', 'price', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'category', 'price', 'actions'];
   products = [];
 
   @Output() selectProduct = new EventEmitter();
@@ -45,10 +45,13 @@ export class ProductsOverviewComponent implements OnInit, OnDestroy {
       this.productService.notifyUpdate();
     }, error => {
       this.snackBar.open(`Could not delete the product 🤔 (${error.status})`);
-    })
+    });
   }
+
   purchaseProduct(product: Product) {
     this.saleService.performSale(product).subscribe(() => {
+      this.saleService.notifyUpdate();
+
       this.snackBar.open('Sale completed! 🎉');
     }, error => {
       this.snackBar.open(`Could not complete the sale 🤔 (${error.status})`);

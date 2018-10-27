@@ -1,0 +1,32 @@
+
+<mat-table [dataSource]="sales" class="mat-elevation-z8">
+  <ng-container matColumnDef="timestamp">
+    <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{ element.timestamp | date:'dd/MM/yyyy HH:mm' }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="product">
+    <mat-header-cell *matHeaderCellDef> Product Id </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{ element.product }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="amount">
+    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{ element.amount }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="payment">
+    <mat-header-cell *matHeaderCellDef> Payment </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{ element.payment | currency:'DKK' }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-raised-button color="warn" (click)="deleteSale(element)">Delete</button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

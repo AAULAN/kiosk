@@ -1,7 +1,7 @@
 export class Product {
   id: number;
   name: string;
-  active: boolean;
+  active = false;
   price: number;
   category: string;
 }

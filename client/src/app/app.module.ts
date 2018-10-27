@@ -25,13 +25,15 @@ import { KeyInterceptor } from './interceptor/key.interceptor';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { SalesOverviewComponent } from './component/sales-overview/sales-overview.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductsOverviewComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    SalesOverviewComponent
   ],
   imports: [
     BrowserModule,
