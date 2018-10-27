@@ -1,3 +1,4 @@
+from sqlalchemy import desc
 from __init__ import db
 
 
@@ -113,6 +114,6 @@ def add_db_sales(sales):
 
 def get_db_sales(product_id=None):
     if not product_id:
-        return Sale.query.all()
+        return Sale.query.order_by(desc(Sale.timestamp)).all()
     else:
-        return Sale.query.filter_by(product=product_id).all()
+        return Sale.query.order_by(desc(Sale.timestamp)).filter_by(product=product_id).all()
