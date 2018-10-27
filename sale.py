@@ -44,7 +44,7 @@ def get_sale_count(product_id):
     return jsonify({'product': product_id, 'count': count})
 
 
-@sale_blueprint.route('/<int:product_id>', methods=['DELETE'])
+@sale_blueprint.route('/<int:sale_id>', methods=['DELETE'])
 def delete_sale(sale_id):
     sale = get_db_sales(sale_id)
 
