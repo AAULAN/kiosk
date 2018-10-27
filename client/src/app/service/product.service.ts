@@ -14,4 +14,12 @@ export class ProductService {
   getAll() {
     return this.client.get<Product[]>(this.api);
   }
+
+  update(product: Product) {
+    return this.client.put<any>(`${this.api}/${product.id}`, product);
+  }
+
+  create(product: Product) {
+    return this.client.post<any>(`${this.api}`, product);
+  }
 }

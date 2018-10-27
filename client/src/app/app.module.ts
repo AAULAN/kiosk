@@ -18,11 +18,13 @@ import {
   MatDividerModule,
   MatDialogModule,
   MatFormFieldModule,
-  MatInputModule} from '@angular/material';
+  MatInputModule,
+  MatCheckboxModule} from '@angular/material';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { KeyInterceptor } from './interceptor/key.interceptor';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -45,7 +47,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatDividerModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatCheckboxModule,
+    FormsModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: KeyInterceptor, multi: true}],
   bootstrap: [AppComponent],

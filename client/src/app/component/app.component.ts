@@ -19,6 +19,12 @@ export class AppComponent {
       width: '600px',
       data: { product: product }
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('update');
+      }
+    });
   }
 
   selectProduct(product: Product) {

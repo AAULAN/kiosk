@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./products-overview.component.scss']
 })
 export class ProductsOverviewComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'price', 'actions'];
+  displayedColumns: string[] = ['name', 'category', 'price', 'actions'];
   products = [];
 
   @Output() selectProduct = new EventEmitter();
@@ -36,7 +36,7 @@ export class ProductsOverviewComponent implements OnInit {
     this.saleService.performSale(product).subscribe(result => {
       this.snackBar.open('Sale completed! 🎉');
     }, error => {
-      this.snackBar.open(`An error occurred! 😞 (${error.status})`);
+      this.snackBar.open(`An error occurred! 🤔 (${error.status})`);
     });
   }
 }
