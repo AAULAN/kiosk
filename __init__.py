@@ -1,5 +1,7 @@
 from flask import Flask, abort, url_for
-import datetime
+from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
+from config import config_by_name
 
 products = [
     {
@@ -35,14 +37,14 @@ products = [
 sales = [
     {
         'id': 1,
-        'timestamp': datetime.datetime.now(),
+        'timestamp': datetime.now(),
         'product': 1,
         'amount': 1,
         'payed': 12
     },
     {
         'id': 1,
-        'timestamp': datetime.datetime.now(),
+        'timestamp': datetime.now(),
         'product': 1,
         'amount': 2,
         'payed': 24
@@ -54,7 +56,7 @@ def list_categories():
     categories = list()
     for product in products:
         category = dict()
-        category["name"] = product["category"]
+        category['name'] = product['category']
         if category not in categories:
             categories.append(category)
     return categories
@@ -62,8 +64,8 @@ def list_categories():
 
 def make_public_category(category):
     new_category = dict()
-    new_category["name"] = category["name"]
-    new_category['uri'] = url_for('category.get_category_products', product_category=category["name"], _external=True)
+    new_category['name'] = category['name']
+    new_category['uri'] = url_for('category.get_category_products', product_category=category['name'], _external=True)
     return new_category
 
 
@@ -89,15 +91,16 @@ def make_public_product(product):
 
 def check_duplicate(prod):
     for p in products:
-        if p["name"] == prod["name"] and p["category"] == prod["category"]:
+        if p['name'] == prod['name'] and p['category'] == prod['category']:
             abort(403)
 
 
-def authorize(req):
-    if req.json is None or "key" not in req.json or req.json["key"] != "lookupapikeys":
-        abort(401)
+db = SQLAlchemy()
 
 
 def create_app():
     app = Flask(__name__)
+    app.config.from_object(config_by_name['prod'])
+    db.init_app(app)
+
     return app

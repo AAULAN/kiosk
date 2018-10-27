@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, abort, request
-from __init__ import make_public_sale, sales, authorize, products
-from product import get_product
+from __init__ import make_public_sale, sales, products
 
 sale_blueprint = Blueprint('sale', __name__, url_prefix='/kiosk/api/v1.0/sales')
 
@@ -12,7 +11,6 @@ def get_sales():
 
 @sale_blueprint.route('', methods=['POST'])
 def add_sale():
-    authorize(request)
     if not request.json or 'product' not in request.json:
         abort(400)
 
@@ -21,7 +19,6 @@ def add_sale():
         abort(404)
 
     sale = {
-        'id': sales[-1]['id'] + 1,
         'product': request.json['product'],
         'amount': request.json['amount'],
         'payed': product[0]['price'] * request.json['amount']
