@@ -1,12 +1,12 @@
 <mat-table [dataSource]="products" class="mat-elevation-z8">
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="price">
       <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{ element.price | currency:'DKK' }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
