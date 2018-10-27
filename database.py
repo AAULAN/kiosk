@@ -5,7 +5,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     category = db.Column(db.String(80), nullable=False)
-    price = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
     active = db.Column(db.Boolean, nullable=False)
 
     @property
@@ -23,7 +23,7 @@ class Sale(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product = db.Column(db.Integer, nullable=False)
     amount = db.Column(db.Integer, nullable=False)
-    payment = db.Column(db.Integer, nullable=False)
+    payment = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.TIMESTAMP, nullable=False)
 
     @property
