@@ -13,14 +13,13 @@ def get_products():
 def create_product():
     if not request.json or 'name' not in request.json:
         abort(400)
+
     product = {
         'name': request.json['name'],
         'category': request.json.get('category', ''),
         'price': request.json['price'],
         'active': True
     }
-
-    #check_duplicate(product)
 
     add_db_products(product)
     return jsonify({'result': 'success'}), 201
