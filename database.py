@@ -112,7 +112,9 @@ def add_db_sales(sales):
     db.session.commit()
 
 
-def get_db_sales(product_id=None):
+def get_db_sales(sale_id=None, product_id=None):
+    if sale_id:
+        return Sale.query.filter_by(id=sale_id).first()
     if not product_id:
         return Sale.query.order_by(asc(Sale.timestamp)).all()
     else:

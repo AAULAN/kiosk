@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, abort, request
-from database import get_db_sales, get_db_products, add_db_sales
+from database import get_db_sales, get_db_products, add_db_sales, delete_db_sales
 from datetime import datetime
 
 sale_blueprint = Blueprint('sale', __name__, url_prefix='/kiosk/api/v1.0/sales')
@@ -34,7 +34,7 @@ def add_sale():
 @sale_blueprint.route('/<int:product_id>', methods=['GET'])
 def get_sale_count(product_id):
     count = 0
-    sale = get_db_sales(product_id)
+    sale = get_db_sales(product_id=product_id)
     if not sale:
         abort(404)
 
@@ -46,10 +46,10 @@ def get_sale_count(product_id):
 
 @sale_blueprint.route('/<int:sale_id>', methods=['DELETE'])
 def delete_sale(sale_id):
-    sale = get_db_sales(sale_id)
+    sale = get_db_sales(sale_id=sale_id)
 
     if not sale:
         abort(404)
 
-    delete_sale(sale_id)
+    delete_db_sales(sale_id)
     return jsonify({'result': 'success'})
