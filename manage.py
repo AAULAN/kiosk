@@ -36,7 +36,7 @@ def not_found(error):
 
 manager = Manager(app)
 
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, compare_type=True)
 
 manager.add_command('db', MigrateCommand)
 

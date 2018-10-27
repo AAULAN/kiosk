@@ -1,5 +1,6 @@
 from flask import Blueprint, abort, jsonify, request
 from database import get_db_products, add_db_products, remove_db_products, update_db_products
+from numbers import Number
 
 product_blueprint = Blueprint('product', __name__, url_prefix='/kiosk/api/v1.0/products')
 
@@ -52,7 +53,7 @@ def update_product(product_id):
         abort(400)
     if 'category' in request.json and type(request.json['category']) is not str:
         abort(400)
-    if 'price' in request.json and type(request.json['price']) is not int:
+    if 'price' in request.json and not isinstance(request.json['price'], Number):
         abort(400)
     if 'active' in request.json and type(request.json['active']) is not bool:
         abort(400)

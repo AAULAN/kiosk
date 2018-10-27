@@ -15,7 +15,7 @@ export class AppComponent {
 
   private openProductDialog(product: Product) {
     this.dialog.open(ProductDetailsComponent, {
-      height: '310px',
+      height: '315px',
       width: '600px',
       data: { product: product }
     });
