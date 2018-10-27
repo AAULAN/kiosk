@@ -1,18 +1,19 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Product } from 'src/app/model/product.model';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-product-details',
-  templateUrl: './product-details.component.html'
+  templateUrl: './product-details.component.html',
+  styleUrls: ['./product-details.component.scss']
 })
 export class ProductDetailsComponent implements OnInit {
-  @Input() product: Product;
+  private product: Product;
 
-  constructor() { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
-    if (!this.product.id) {
-      console.log(this.product);
-    }
+    this.product = this.data.product;
+    console.log(this.product);
   }
 }
