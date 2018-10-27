@@ -6,8 +6,7 @@ import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-sales-overview',
-  templateUrl: './sales-overview.component.html',
-  styleUrls: ['./sales-overview.component.scss']
+  templateUrl: './sales-overview.component.html'
 })
 export class SalesOverviewComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['timestamp', 'product', 'amount', 'payment', 'actions'];
@@ -33,7 +32,9 @@ export class SalesOverviewComponent implements OnInit, OnDestroy {
   }
 
   deleteSale(sale: Sale) {
-    this.saleService.delete(sale).subscribe(result => this.saleService.notifyUpdate(), error => {
+    this.saleService.delete(sale).subscribe(_ => {
+      this.saleService.notifyUpdate();
+    }, error => {
       this.snackBar.open(`Could not delete the sale 🤔 (${error.status})`);
     });
   }
