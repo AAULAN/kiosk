@@ -17,9 +17,10 @@
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <button mat-raised-button color="primary" class="purchase-button" *ngIf="element.active"
+      <button mat-raised-button color="primary" class="margin-button" *ngIf="element.active"
               (click)="purchaseProduct(element)">Purchase</button>
-      <button mat-raised-button color="accent" (click)="editProduct(element)">Edit</button>
+      <button mat-raised-button color="accent" class="margin-button" (click)="editProduct(element)">Edit</button>
+      <button mat-raised-button color="warn" (click)="deleteProduct(element)">Delete</button>
     </mat-cell>
   </ng-container>
 

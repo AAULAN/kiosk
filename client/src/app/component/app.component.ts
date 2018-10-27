@@ -14,16 +14,10 @@ export class AppComponent {
   constructor (private dialog: MatDialog) {}
 
   private openProductDialog(product: Product) {
-    const dialogRef = this.dialog.open(ProductDetailsComponent, {
-      height: '400px',
+    this.dialog.open(ProductDetailsComponent, {
+      height: '310px',
       width: '600px',
       data: { product: product }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('update');
-      }
     });
   }
 

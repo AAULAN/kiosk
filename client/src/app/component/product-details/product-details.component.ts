@@ -19,7 +19,6 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.product = this.data.product;
-    console.log(this.product);
   }
 
   submit() {
@@ -30,6 +29,10 @@ export class ProductDetailsComponent implements OnInit {
       observable = this.productService.create(this.product);
     }
 
-    observable.subscribe(data => this.dialogRef.close(true), error => this.snackBar.open(`An error occurred! 🤔 (${error.status})`));
+    observable.subscribe(data => {
+      this.productService.notifyUpdate();
+
+      this.dialogRef.close(true);
+    }, error => this.snackBar.open(`Could not save changes 🤔 (${error.status})`));
   }
 }

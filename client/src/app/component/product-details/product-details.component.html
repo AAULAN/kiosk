@@ -1,17 +1,17 @@
 <form #productForm="ngForm" (ngSubmit)="submit()">
   <mat-form-field class="product-form">
-    <input matInput placeholder="Name" [(value)]="product.name" required>
+    <input matInput placeholder="Name" [(ngModel)]="product.name" name="name" required>
   </mat-form-field>
 
   <mat-form-field class="product-form">
-    <input matInput placeholder="Category" [(value)]="product.category" required>
+    <input matInput placeholder="Category" [(ngModel)]="product.category" name="category" required>
   </mat-form-field>
 
   <mat-form-field class="product-form">
-    <input matInput placeholder="Price" [(value)]="product.price" required>
+    <input matInput placeholder="Price" [(ngModel)]="product.price" name="price" required>
   </mat-form-field>
 
-  <mat-checkbox [(checked)]="product.active">Active</mat-checkbox>
+  <mat-checkbox [(ngModel)]="product.active" name="active">Active</mat-checkbox>
 
   <p>
     <button type="submit" mat-raised-button color="primary">Save product</button>

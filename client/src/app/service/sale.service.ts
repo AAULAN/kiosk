@@ -15,7 +15,7 @@ export class SaleService {
 
   performSale(product: Product, amount: number = 1) {
     const sale = new Sale();
-    sale.productId = product.id;
+    sale.product = product.id;
     sale.amount = amount;
 
     return this.client.post<any>(this.api, sale);

@@ -1,4 +1,4 @@
 export class Sale {
-  productId: number;
+  product: number;
   amount: number;
 }
