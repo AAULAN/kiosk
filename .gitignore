@@ -104,3 +104,7 @@ venv.bak/
 .mypy_cache/
 Kiosk.pyproj
 .idea/
+*.db
+
+# Don't spoil the fun :D
+secrets.py

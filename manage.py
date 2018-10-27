@@ -1,14 +1,18 @@
+from category import category_blueprint
+from product import product_blueprint
+from sale import sale_blueprint
 from flask import make_response, jsonify
+from flask_cors import CORS
 from flask_script import Manager
-from __init__ import create_app
-import product, sale, category
-
+from flask_migrate import Migrate, MigrateCommand
+from __init__ import create_app, db
 
 app = create_app()
-app.register_blueprint(product.product_blueprint)
-app.register_blueprint(sale.sale_blueprint)
-app.register_blueprint(category.category_blueprint)
+app.register_blueprint(product_blueprint)
+app.register_blueprint(sale_blueprint)
+app.register_blueprint(category_blueprint)
 app.app_context().push()
+CORS(app)
 
 
 @app.errorhandler(400)
@@ -32,6 +36,10 @@ def not_found(error):
 
 
 manager = Manager(app)
+
+migrate = Migrate(app, db)
+
+manager.add_command('db', MigrateCommand)
 
 
 @manager.command
