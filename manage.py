@@ -6,6 +6,7 @@ from flask_cors import CORS
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from __init__ import create_app, db
+from database import delete_db_sales
 
 app = create_app()
 app.register_blueprint(product_blueprint)
@@ -44,6 +45,11 @@ manager.add_command('db', MigrateCommand)
 @manager.command
 def run():
     app.run()
+
+
+@manager.command
+def clear_sales():
+    delete_db_sales()
 
 
 if __name__ == '__main__':

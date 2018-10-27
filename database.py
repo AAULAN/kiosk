@@ -1,3 +1,5 @@
+from sqlalchemy import asc
+
 from __init__ import db
 
 
@@ -56,7 +58,7 @@ def add_db_products(products):
     db.session.commit()
 
 
-def remove_db_products(products):
+def delete_db_products(products):
     if type(products) is list:
         for product in products:
             db.session.delete(product)
@@ -113,6 +115,15 @@ def add_db_sales(sales):
 
 def get_db_sales(product_id=None):
     if not product_id:
-        return Sale.query.all()
+        return Sale.query.order_by(asc(Sale.timestamp)).all()
     else:
-        return Sale.query.filter_by(product=product_id).all()
+        return Sale.query.order_by(asc(Sale.timestamp)).filter_by(product=product_id).all()
+
+
+def delete_db_sales(sale_id=None):
+    if not sale_id:
+        for sale in get_db_sales():
+            db.session.delete(sale)
+    else:
+        db.session.delete(get_db_sales(sale_id))
+    db.session.commit()

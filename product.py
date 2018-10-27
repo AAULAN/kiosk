@@ -1,5 +1,5 @@
 from flask import Blueprint, abort, jsonify, request
-from database import get_db_products, add_db_products, remove_db_products, update_db_products
+from database import get_db_products, add_db_products, delete_db_products, update_db_products
 from numbers import Number
 
 product_blueprint = Blueprint('product', __name__, url_prefix='/kiosk/api/v1.0/products')
@@ -75,5 +75,5 @@ def delete_product(product_id):
     product = get_db_products(product_id=product_id)
     if not product:
         abort(404)
-    remove_db_products(product)
+    delete_db_products(product)
     return jsonify({'result': 'success'})
