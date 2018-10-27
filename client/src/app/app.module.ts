@@ -19,7 +19,8 @@ import {
   MatDialogModule,
   MatFormFieldModule,
   MatInputModule,
-  MatCheckboxModule} from '@angular/material';
+  MatCheckboxModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { KeyInterceptor } from './interceptor/key.interceptor';
 
@@ -53,7 +54,8 @@ import { SalesOverviewComponent } from './component/sales-overview/sales-overvie
     MatCheckboxModule,
     FormsModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: KeyInterceptor, multi: true}],
+  providers: [{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 1500}},
+    {provide: HTTP_INTERCEPTORS, useClass: KeyInterceptor, multi: true}],
   bootstrap: [AppComponent],
   entryComponents: [ProductDetailsComponent]
 })
