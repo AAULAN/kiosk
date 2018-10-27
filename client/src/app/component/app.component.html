@@ -1,11 +1,21 @@
-<div class="mat-app-background">
-  <mat-toolbar color="primary">
-    <mat-toolbar-row>
-      <span>Products</span>
-      <span class="spacer"></span>
-      <mat-icon class="example-icon">add</mat-icon>
-    </mat-toolbar-row>
-  </mat-toolbar>
+<div id="container">
+  <mat-card>
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <span>Products</span>
+        <span class="spacer"></span>
+        <mat-icon class="example-icon" (click)="createProduct()">add</mat-icon>
+      </mat-toolbar-row>
+    </mat-toolbar>
 
-  <app-products-overview></app-products-overview>
+    <app-products-overview (selectProduct)="selectProduct($event)"></app-products-overview>
+  </mat-card>
+
+  <mat-card *ngIf="selectedProduct">
+    <mat-toolbar color="accent">
+      <span>{{ selectedProduct.id ? 'Edit details' : 'New product' }}</span>
+    </mat-toolbar>
+
+    <app-product-details [product]="selectedProduct"></app-product-details>
+  </mat-card>
 </div>

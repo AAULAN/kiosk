@@ -14,7 +14,7 @@
       <mat-cell *matCellDef="let element">
         <button mat-raised-button color="primary" class="purchase-button" *ngIf="element.active"
                 (click)="purchaseProduct(element)">Purchase</button>
-        <button mat-raised-button color="accent">Edit</button>
+        <button mat-raised-button color="accent" (click)="editProduct(element)">Edit</button>
       </mat-cell>
     </ng-container>
 

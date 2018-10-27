@@ -1,6 +1,6 @@
 import { SaleService } from './../../service/sale.service';
 import { ProductService } from './../../service/product.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Sale } from 'src/app/model/sale.model';
 import { Product } from 'src/app/model/product.model';
 import { MatSnackBar } from '@angular/material';
@@ -14,6 +14,8 @@ export class ProductsOverviewComponent implements OnInit {
   displayedColumns: string[] = ['name', 'price', 'actions'];
   products = [];
 
+  @Output() selectProduct = new EventEmitter();
+
   constructor(private productService: ProductService,
               private saleService: SaleService,
               private snackBar: MatSnackBar) { }
@@ -26,8 +28,12 @@ export class ProductsOverviewComponent implements OnInit {
     this.productService.getAll().subscribe(data => this.products = data);
   }
 
+  editProduct(product: Product) {
+    this.selectProduct.emit(product);
+  }
+
   purchaseProduct(product: Product) {
-    this.saleService.performSale(product).subscribe(data => {
+    this.saleService.performSale(product).subscribe(result => {
       this.snackBar.open('Sale completed! 🎉');
     }, error => {
       this.snackBar.open(`An error occurred! 😞 (${error.status})`);
