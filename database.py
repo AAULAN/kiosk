@@ -39,7 +39,7 @@ class Sale(db.Model):
         }
 
 
-def add_db_products(products):
+def add_db_product(products):
     if type(products) is dict:
         new_product = Product()
         new_product.category = products['category']
@@ -58,12 +58,11 @@ def add_db_products(products):
     db.session.commit()
 
 
-def delete_db_products(products):
-    if type(products) is list:
-        for product in products:
-            db.session.delete(product)
+def delete_db_product(product_id):
+    if not product_id:
+            db.session.delete(get_db_products())
     else:
-        db.session.delete(products)
+        db.session.delete(get_db_products(product_id))
     db.session.commit()
 
 
