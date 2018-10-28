@@ -6,10 +6,13 @@ import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-sales-overview',
-  templateUrl: './sales-overview.component.html'
+  templateUrl: './sales-overview.component.html',
+  styleUrls: ['./sales-overview.component.scss']
 })
 export class SalesOverviewComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['timestamp', 'product', 'amount', 'payment', 'actions'];
+  footerColumns: string[] = ['timestamp', 'payment'];
+  loading = false;
   sales = [];
 
   private salesUpdatedSubscription: Subscription;
@@ -28,7 +31,12 @@ export class SalesOverviewComponent implements OnInit, OnDestroy {
   }
 
   loadSales(): void {
-    this.saleService.getAll().subscribe(data => this.sales = data);
+    this.loading = true;
+
+    this.saleService.getAll().subscribe(data => {
+      this.sales = data;
+      this.loading = false;
+    });
   }
 
   deleteSale(sale: Sale) {
@@ -37,5 +45,9 @@ export class SalesOverviewComponent implements OnInit, OnDestroy {
     }, error => {
       this.snackBar.open(`Could not delete the sale 🤔 (${error.status})`);
     });
+  }
+
+  getTotalCost() {
+    return this.sales.map(t => t.payment).reduce((acc, value) => acc + value, 0);
   }
 }
