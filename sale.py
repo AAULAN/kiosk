@@ -37,7 +37,7 @@ def add_sale():
         'active': product['active']
     }
 
-    update_db_products(product['id'], new_product)
+    update_db_products(request.json['product'], new_product)
     add_db_sales(sale)
 
     return jsonify({'result': 'success'}), 201
@@ -59,9 +59,19 @@ def get_sale_count(product_id):
 @sale_blueprint.route('/<int:sale_id>', methods=['DELETE'])
 def delete_sale(sale_id):
     sale = get_db_sales(sale_id=sale_id)
+    product = get_db_products(sale.product)
+
+    new_product = {
+        'name': product['name'],
+        'category': product['category'],
+        'price': product['price'],
+        'stock': product['stock'] + 1,
+        'active': product['active']
+    }
 
     if not sale:
         abort(404)
 
+    update_db_products(sale.product, new_product)
     delete_db_sales(sale_id)
     return jsonify({'result': 'success'})
