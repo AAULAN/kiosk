@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, abort, request
-from database import get_db_sales, get_db_products, add_db_sales, delete_db_sales
+from database import get_db_sales, get_db_products, update_db_products, add_db_sales, delete_db_sales
 from datetime import datetime
 
 sale_blueprint = Blueprint('sale', __name__, url_prefix='/kiosk/api/v1.0/sales')
@@ -19,6 +19,9 @@ def add_sale():
     if len(product) == 0:
         abort(404)
 
+    if product['stock'] <= 0:
+        abort(400)
+
     sale = {
         'product': request.json['product'],
         'amount': request.json['amount'],
@@ -26,6 +29,15 @@ def add_sale():
         'timestamp': datetime.utcnow()
     }
 
+    new_product = {
+        'name': product['name'],
+        'category': product['category'],
+        'price': product['price'],
+        'stock': product['stock'] - 1,
+        'active': product['active']
+    }
+
+    update_db_products(product['id'], new_product)
     add_db_sales(sale)
 
     return jsonify({'result': 'success'}), 201
