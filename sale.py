@@ -22,6 +22,8 @@ def add_sale():
     if product['stock'] <= 0:
         abort(400)
 
+    product['stock'] -= 1
+
     sale = {
         'product': request.json['product'],
         'amount': request.json['amount'],
@@ -29,15 +31,7 @@ def add_sale():
         'timestamp': datetime.utcnow()
     }
 
-    new_product = {
-        'name': product['name'],
-        'category': product['category'],
-        'price': product['price'],
-        'stock': product['stock'] - 1,
-        'active': product['active']
-    }
-
-    update_db_products(request.json['product'], new_product)
+    update_db_products(request.json['product'], product)
     add_db_sales(sale)
 
     return jsonify({'result': 'success'}), 201
@@ -61,17 +55,13 @@ def delete_sale(sale_id):
     sale = get_db_sales(sale_id=sale_id)
     product = get_db_products(sale.product)
 
-    new_product = {
-        'name': product['name'],
-        'category': product['category'],
-        'price': product['price'],
-        'stock': product['stock'] + 1,
-        'active': product['active']
-    }
+    print("DEBUG: @delete_sale: ", product)
+
+    product['stock'] += 1
 
     if not sale:
         abort(404)
 
-    update_db_products(sale.product, new_product)
+    update_db_products(sale.product, product)
     delete_db_sales(sale_id)
     return jsonify({'result': 'success'})

@@ -56,6 +56,8 @@ def update_product(product_id):
         abort(400)
     if 'price' in request.json and not isinstance(request.json['price'], Number):
         abort(400)
+    if 'stock' in request.json and not isinstance(request.json['stock'], Number):
+        abort(400)
     if 'active' in request.json and type(request.json['active']) is not bool:
         abort(400)
 
