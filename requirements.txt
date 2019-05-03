@@ -6,3 +6,4 @@ flask-script
 flask-migrate
 gunicorn
 gevent
+pymysql
