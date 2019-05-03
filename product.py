@@ -18,7 +18,8 @@ def create_product():
     product = {
         'name': request.json['name'],
         'category': request.json.get('category', ''),
-        'price': request.json['price'],
+        'price': request.json.get('price', 0),
+        'stock': request.json.get('stock', 0),
         'active': request.json.get('active', False)
     }
 
@@ -62,6 +63,7 @@ def update_product(product_id):
         'name': request.json.get('name', product['name']),
         'category': request.json.get('category', product['category']),
         'price': request.json.get('price', product['price']),
+        'stock': request.json.get('stock', product['stock']),
         'active': request.json.get('active', product['active'])
     }
 

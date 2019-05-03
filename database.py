@@ -1,5 +1,3 @@
-from sqlalchemy import asc, desc
-
 from __init__ import db
 
 
@@ -8,6 +6,7 @@ class Product(db.Model):
     name = db.Column(db.String(80), nullable=False)
     category = db.Column(db.String(80), nullable=False)
     price = db.Column(db.Float, nullable=False)
+    stock = db.Column(db.Integer, nullable=False)
     active = db.Column(db.Boolean, nullable=False)
 
     @property
@@ -17,6 +16,7 @@ class Product(db.Model):
             'name': self.name,
             'category': self.category,
             'price': self.price,
+            'stock': self.stock,
             'active': self.active
         }
 
@@ -45,6 +45,7 @@ def add_db_product(products):
         new_product.category = products['category']
         new_product.name = products['name']
         new_product.price = products['price']
+        new_product.stock = products['stock']
         new_product.active = products['active']
         db.session.add(new_product)
     else:
@@ -53,6 +54,7 @@ def add_db_product(products):
             new_product.category = product['category']
             new_product.name = product['name']
             new_product.price = product['price']
+            new_product.stock = product['stock']
             new_product.active = product['active']
             db.session.add(new_product)
     db.session.commit()
@@ -71,6 +73,7 @@ def update_db_products(product_id, new_product):
     product.category = new_product['category']
     product.name = new_product['name']
     product.price = new_product['price']
+    product.stock = new_product['stock']
     product.active = new_product['active']
     db.session.commit()
 
