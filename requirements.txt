@@ -1,0 +1,9 @@
+sqlalchemy
+flask
+flask-sqlalchemy
+flask-cors
+flask-script
+flask-migrate
+gunicorn
+gevent
+pymysql
