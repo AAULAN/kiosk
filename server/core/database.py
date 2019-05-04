@@ -62,7 +62,7 @@ def add_db_product(products):
 
 def delete_db_product(product_id):
     if not product_id:
-            db.session.delete(get_db_products())
+        db.session.delete(get_db_products())
     else:
         db.session.delete(get_db_products(product_id))
     db.session.commit()
