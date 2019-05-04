@@ -10,6 +10,11 @@
     <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
   </ng-container>
 
+  <ng-container matColumnDef="stock">
+    <mat-header-cell *matHeaderCellDef> Stock </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{ element.stock }} </mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="price">
     <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{ element.price | currency:'DKK' }} </mat-cell>
@@ -23,7 +28,7 @@
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <button matTooltip="Purchase" mat-icon-button color="primary" class="margin-button" [disabled]="!element.active"
+      <button matTooltip="Purchase" mat-icon-button color="primary" class="margin-button" [disabled]="!element.active && element.stock"
               (click)="purchaseProduct(element)">
             <mat-icon>attach_money</mat-icon>
         </button>
