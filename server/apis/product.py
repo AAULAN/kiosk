@@ -9,7 +9,7 @@ product_input = api.model('Product_request', {
     'name': fields.String(required=True, description='The product name'),
     'category': fields.String(description='The product category', default='Uncategorized'),
     'price': fields.Float(description='The product price', default=0),
-    'stock': fields.Integer(description='The amount in stock', default=0),
+    'stock': fields.Integer(description='The amount in stock (-1 for infinite)', default=-1),
     'active': fields.Boolean(description='Whether or not the product is purchasable', default=True)
 })
 
@@ -39,14 +39,14 @@ class Products(Resource):
         if not json or 'name' not in json:
             api.abort(400)
 
-        if 'stock' in json and json['stock'] < 0:
-            api.abort(400, "'stock' must be a positive number")
+        if 'stock' in json and json['stock'] < -1:
+            api.abort(400, "'stock' must be a positive number or -1")
 
         db_product = {
             'name': json['name'],
             'category': json.get('category', 'Uncategorized'),
             'price': json.get('price', 0),
-            'stock': json.get('stock', 0),
+            'stock': json.get('stock', -1),
             'active': json.get('active', True)
         }
 
@@ -75,8 +75,8 @@ class Product(Resource):
         if not json:
             api.abort(400)
 
-        db_product = get_db_products(product_id=product).serialize
-        if len(db_product) == 0:
+        db_product = get_db_products(product_id=product)
+        if not db_product:
             api.abort(404)
 
         if 'name' in json and type(json['name']) is not str:
@@ -85,17 +85,17 @@ class Product(Resource):
             api.abort(400)
         if 'price' in json and not isinstance(json['price'], Number):
             api.abort(400)
-        if 'stock' in json and (not isinstance(json['stock'], Number) or json['stock'] < 0):
+        if 'stock' in json and (not isinstance(json['stock'], Number) or json['stock'] < -1):
             api.abort(400)
         if 'active' in json and type(json['active']) is not bool:
             api.abort(400)
 
         new_product = {
-            'name': json.get('name', db_product['name']),
-            'category': json.get('category', db_product['category']),
-            'price': json.get('price', db_product['price']),
-            'stock': json.get('stock', db_product['stock']),
-            'active': json.get('active', db_product['active'])
+            'name': json.get('name', db_product.name),
+            'category': json.get('category', db_product.category),
+            'price': json.get('price', db_product.price),
+            'stock': json.get('stock', db_product.stock),
+            'active': json.get('active', db_product.active)
         }
 
         update_db_products(product, new_product)

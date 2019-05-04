@@ -36,26 +36,29 @@ class Sales(Resource):
         if not json or 'product' not in json:
             api.abort(400, 'Malformed request')
 
-        if 'amount' in json and json['amount'] < 0:
+        amount = json['amount'] if 'amount' in json else 1
+
+        if amount <= 0:
             api.abort(400, "'amount' must be a positive number")
 
-        db_product = get_db_products(product_id=json['product']).serialize
-        if len(db_product) == 0:
+        db_product = get_db_products(product_id=json['product'])
+        if not db_product:
             api.abort(404)
 
-        if db_product['stock'] <= 0:
-            api.abort(400, 'Product out of stock')
+        if not db_product.stock == -1:
+            if db_product.stock - amount < 0:
+                api.abort(400, 'Not enough stock')
 
-        db_product['stock'] -= 1
+            db_product.stock -= amount
 
         db_sale = {
             'product': json['product'],
-            'amount': json.get('amount', 1),
-            'payment': db_product['price'] * json.get('amount', 1),
+            'amount': amount,
+            'payment': db_product.price * amount,
             'timestamp': datetime.utcnow()
         }
 
-        update_db_products(json['product'], db_product)
+        update_db_products(json['product'], db_product.serialize)
         add_db_sales(db_sale)
 
         return {'result': 'success'}, 201
@@ -74,7 +77,7 @@ class Product(Resource):
             api.abort(404)
 
         for prod in product_sale:
-            count += prod.serialize['amount']
+            count += prod.amount
 
         return {'product': db_product.serialize, 'count': count}
 
@@ -88,10 +91,11 @@ class Sale(Resource):
         db_sale = get_db_sales(sale_id=sale)
         product = get_db_products(db_sale.product)
 
-        product.stock += 1
-
-        if not db_sale:
+        if not db_sale or not product:
             api.abort(404)
+
+        if not product.stock == -1:
+            product.stock += db_sale.amount
 
         update_db_products(db_sale.product, product.serialize)
         delete_db_sales(sale)
