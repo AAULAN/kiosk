@@ -5,16 +5,16 @@ from datetime import datetime
 
 api = Namespace('sales', description='Sale related operations')
 
-sale_input = api.model('Sale_in', {
+sale_input = api.model('Sale_request', {
     'product': fields.Integer(required=True, description='The product identifier'),
-    'amount': fields.Integer(required=True, description='The amount purchased')
+    'amount': fields.Integer(description='The amount purchased', default=1)
 })
 
-sale_output = api.model('Sale', {
+sale_output = api.model('Sale_response', {
     'id': fields.Integer(description='The sale identifier'),
-    'product': fields.Integer(required=True, description='The product identifier'),
-    'amount': fields.Integer(required=True, description='The amount purchased'),
-    'payment': fields.Float(required=True, description='Total price for the sale'),
+    'product': fields.Integer(description='The product identifier'),
+    'amount': fields.Integer(description='The amount purchased'),
+    'payment': fields.Float(description='Total price for the sale'),
     'timestamp': fields.DateTime(description='The timestamp of the purchase')
 })
 

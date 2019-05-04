@@ -5,15 +5,15 @@ from numbers import Number
 
 api = Namespace('products', description='Product related operations')
 
-product_input = api.model('Product_in', {
-    'name': fields.String(description='The product name'),
-    'category': fields.String(description='The product category'),
-    'price': fields.Float(description='The product price'),
-    'stock': fields.Integer(description='The amount in stock'),
-    'active': fields.Boolean(description='Whether or not the product is purchasable')
+product_input = api.model('Product_request', {
+    'name': fields.String(required=True, description='The product name'),
+    'category': fields.String(description='The product category', default='Uncategorized'),
+    'price': fields.Float(description='The product price', default=0),
+    'stock': fields.Integer(description='The amount in stock', default=0),
+    'active': fields.Boolean(description='Whether or not the product is purchasable', default=True)
 })
 
-product_output = api.model('Product', {
+product_output = api.model('Product_result', {
     'id': fields.Integer(description='The product identifier'),
     'name': fields.String(description='The product name'),
     'category': fields.String(description='The product category'),
