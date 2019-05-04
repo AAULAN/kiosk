@@ -50,7 +50,7 @@ class Sales(Resource):
                 api.abort(400, 'Not enough stock')
 
             db_product.stock -= amount
-            if db_product.collection:
+            if db_product.collection and db_product.collection != "":
                 collection_products = get_db_products(collection=db_product.collection)
                 for product in collection_products:
                     product.stock = db_product.stock
@@ -102,7 +102,7 @@ class Sale(Resource):
         if not db_product.stock == -1:
             db_product.stock += db_sale.amount
 
-            if db_product.collection:
+            if db_product.collection and db_product.collection != "":
                 collection_products = get_db_products(collection=db_product.collection)
                 for product in collection_products:
                     product.stock = db_product.stock

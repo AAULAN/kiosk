@@ -47,10 +47,19 @@ class Products(Resource):
         db_product = {
             'name': json['name'],
             'category': json.get('category', 'Uncategorized'),
+            'collection': json.get('collection', None),
             'price': json.get('price', 0),
             'stock': json.get('stock', -1),
             'active': json.get('active', True)
         }
+
+        if db_product['collection'] and db_product['collection'] != "":
+            collection_products = get_db_products(collection=db_product['collection'])
+            for product in collection_products:
+                if product.id == db_product.id:
+                    continue
+                product.stock = db_product['stock']
+                update_db_product(product.id, product.serialize)
 
         add_db_product(db_product)
         return {'result': 'success'}, 201
@@ -104,7 +113,7 @@ class Product(Resource):
         }
 
         if 'stock' in json:
-            if db_product.collection:
+            if new_product['collection'] and new_product['collection'] != "":
                 collection_products = get_db_products(collection=new_product['collection'])
                 for product in collection_products:
                     if product.id == db_product.id:
