@@ -11,7 +11,7 @@ export class ProductService {
   private _productsUpdated = new Subject<void>();
   productsUpdated$ = this._productsUpdated.asObservable();
 
-  private api = `${environment.apiBase}/products`;
+  private api = `${environment.apiBase}/products/`;
 
   constructor(private client: HttpClient) { }
 
@@ -20,7 +20,7 @@ export class ProductService {
   }
 
   update(product: Product) {
-    return this.client.put<any>(`${this.api}/${product.id}`, product);
+    return this.client.put<any>(`${this.api}${product.id}`, product);
   }
 
   create(product: Product) {
@@ -28,7 +28,7 @@ export class ProductService {
   }
 
   delete(product: Product) {
-    return this.client.delete<any>(`${this.api}/${product.id}`);
+    return this.client.delete<any>(`${this.api}${product.id}`);
   }
 
   notifyUpdate() {
