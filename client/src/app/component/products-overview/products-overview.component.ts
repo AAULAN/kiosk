@@ -43,6 +43,7 @@ export class ProductsOverviewComponent implements OnInit, OnDestroy {
   deleteProduct(product: Product) {
     this.productService.delete(product).subscribe(() => {
       this.productService.notifyUpdate();
+      this.loadProducts();
     }, error => {
       this.snackBar.open(`Could not delete the product 🤔 (${error.status})`);
     });
@@ -51,6 +52,7 @@ export class ProductsOverviewComponent implements OnInit, OnDestroy {
   purchaseProduct(product: Product) {
     this.saleService.performSale(product).subscribe(() => {
       this.saleService.notifyUpdate();
+      this.loadProducts();
 
       this.snackBar.open('🦀🦀🦀 SALE COMPLETED! 🦀🦀🦀');
     }, error => {
