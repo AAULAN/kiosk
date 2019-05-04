@@ -36,7 +36,10 @@ class Sales(Resource):
         if not json or 'product' not in json:
             api.abort(400, 'Malformed request')
 
-        db_product = get_db_products(product_id=request.json['product']).serialize
+        if 'amount' in json and json['amount'] < 0:
+            api.abort(400, "'amount' must be a positive number")
+
+        db_product = get_db_products(product_id=json['product']).serialize
         if len(db_product) == 0:
             api.abort(404)
 

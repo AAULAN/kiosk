@@ -31,13 +31,16 @@ class Products(Resource):
         return [db_product.serialize for db_product in get_db_products()]
 
     @api.doc('Create a new product')
-    @api.response(400, 'Invalid json or name provided')
+    @api.response(400, 'Malformed request')
     @api.response(201, 'Product created')
     @api.expect(product_input)
     def post(self):
         json = request.json
         if not json or 'name' not in json:
             api.abort(400)
+
+        if 'stock' in json and json['stock'] < 0:
+            api.abort(400, "'stock' must be a positive number")
 
         db_product = {
             'name': json['name'],
@@ -64,32 +67,35 @@ class Product(Resource):
         return db_product.serialize
 
     @api.doc('Update a product')
-    @api.response(400, 'Invalid structure of product')
+    @api.response(400, 'Malformed request')
     @api.response(404, 'Product not found')
     @api.expect(product_input)
     def put(self, product):
+        json = request.json
+        if not json:
+            api.abort(400)
+
         db_product = get_db_products(product_id=product).serialize
         if len(db_product) == 0:
             api.abort(404)
-        if not request.json:
+
+        if 'name' in json and type(json['name']) is not str:
             api.abort(400)
-        if 'name' in request.json and type(request.json['name']) is not str:
+        if 'category' in json and type(json['category']) is not str:
             api.abort(400)
-        if 'category' in request.json and type(request.json['category']) is not str:
+        if 'price' in json and not isinstance(json['price'], Number):
             api.abort(400)
-        if 'price' in request.json and not isinstance(request.json['price'], Number):
+        if 'stock' in json and (not isinstance(json['stock'], Number) or json['stock'] < 0):
             api.abort(400)
-        if 'stock' in request.json and not isinstance(request.json['stock'], Number):
-            api.abort(400)
-        if 'active' in request.json and type(request.json['active']) is not bool:
+        if 'active' in json and type(json['active']) is not bool:
             api.abort(400)
 
         new_product = {
-            'name': request.json.get('name', db_product['name']),
-            'category': request.json.get('category', db_product['category']),
-            'price': request.json.get('price', db_product['price']),
-            'stock': request.json.get('stock', db_product['stock']),
-            'active': request.json.get('active', db_product['active'])
+            'name': json.get('name', db_product['name']),
+            'category': json.get('category', db_product['category']),
+            'price': json.get('price', db_product['price']),
+            'stock': json.get('stock', db_product['stock']),
+            'active': json.get('active', db_product['active'])
         }
 
         update_db_products(product, new_product)
