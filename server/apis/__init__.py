@@ -1,6 +1,7 @@
 from flask_restplus import Api
 
 from .category import api as category
+from .collection import api as collection
 from .product import api as product
 from .sale import api as sale
 
@@ -11,5 +12,6 @@ api = Api(
 )
 
 api.add_namespace(category)
+api.add_namespace(collection)
 api.add_namespace(product)
 api.add_namespace(sale)

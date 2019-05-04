@@ -1,6 +1,6 @@
 from flask import request
 from flask_restplus import Namespace, Resource, fields
-from core.database import get_db_sales, get_db_products, update_db_products, add_db_sales, delete_db_sales
+from core.database import get_db_products, update_db_product, get_db_sales, add_db_sales, delete_db_sales
 from datetime import datetime
 
 api = Namespace('sales', description='Sale related operations')
@@ -50,6 +50,11 @@ class Sales(Resource):
                 api.abort(400, 'Not enough stock')
 
             db_product.stock -= amount
+            if db_product.collection:
+                collection_products = get_db_products(collection=db_product.collection)
+                for product in collection_products:
+                    product.stock = db_product.stock
+                    update_db_product(product.id, product.serialize)
 
         db_sale = {
             'product': json['product'],
@@ -58,7 +63,7 @@ class Sales(Resource):
             'timestamp': datetime.utcnow()
         }
 
-        update_db_products(json['product'], db_product.serialize)
+        update_db_product(db_product.id, db_product.serialize)
         add_db_sales(db_sale)
 
         return {'result': 'success'}, 201
@@ -89,14 +94,20 @@ class Sale(Resource):
     @api.response(404, 'Sale not found')
     def delete(self, sale):
         db_sale = get_db_sales(sale_id=sale)
-        product = get_db_products(db_sale.product)
+        db_product = get_db_products(db_sale.product)
 
-        if not db_sale or not product:
+        if not db_sale or not db_product:
             api.abort(404)
 
-        if not product.stock == -1:
-            product.stock += db_sale.amount
+        if not db_product.stock == -1:
+            db_product.stock += db_sale.amount
 
-        update_db_products(db_sale.product, product.serialize)
+            if db_product.collection:
+                collection_products = get_db_products(collection=db_product.collection)
+                for product in collection_products:
+                    product.stock = db_product.stock
+                    update_db_product(product.id, product.serialize)
+
+        update_db_product(db_product.id, db_product.serialize)
         delete_db_sales(sale)
         return {'result': 'success'}
