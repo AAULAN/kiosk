@@ -4,6 +4,7 @@ flask-sqlalchemy
 flask-cors
 flask-script
 flask-migrate
+flask-restplus
 gunicorn
 gevent
 pymysql

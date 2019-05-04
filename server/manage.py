@@ -1,19 +1,12 @@
-from category import category_blueprint
-from product import product_blueprint
-from sale import sale_blueprint
 from flask import make_response, jsonify
-from flask_cors import CORS
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-from __init__ import create_app, db
-from database import delete_db_sales
+from app import create_app
+from __init__ import db
+from core.database import delete_db_sales
 
-app = create_app()
-app.register_blueprint(product_blueprint)
-app.register_blueprint(sale_blueprint)
-app.register_blueprint(category_blueprint)
-app.app_context().push()
-CORS(app)
+app = create_app('prod')
+
 
 @app.errorhandler(400)
 def bad_request(error):
@@ -44,7 +37,7 @@ manager.add_command('db', MigrateCommand)
 
 @manager.command
 def run():
-    app.run()
+    app.run(debug=True)
 
 
 @manager.command
