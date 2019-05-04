@@ -22,9 +22,23 @@ sale_output = api.model('Sale_response', {
 @api.route('/')
 class Sales(Resource):
     @api.doc('Retrieve all sales')
+    @api.param('from', '[OPTIONAL] Start time (ISO 8601) of sales to fetch')
+    @api.param('to', '[OPTIONAL] End time (ISO 8601) of sales to fetch')
     @api.marshal_list_with(sale_output)
+    @api.response(400, 'Invalid time period')
     def get(self):
-        return [db_sale.serialize for db_sale in get_db_sales()]
+        from_t = request.args.get('from')
+        to_t = request.args.get('to')
+        if not from_t and not to_t:
+            return [db_sale.serialize for db_sale in get_db_sales()]
+        else:
+            if not from_t or not to_t:
+                api.abort(400)
+            else:
+                timespan = {'from': datetime.fromisoformat(from_t), 'to': datetime.fromisoformat(to_t)}
+                if not timespan['from'] or not timespan['to']:
+                    api.abort(400)
+                return [db_sale.serialize for db_sale in get_db_sales(timespan=timespan)]
 
     @api.doc('Add a sale')
     @api.expect(sale_input)

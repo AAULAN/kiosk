@@ -133,13 +133,15 @@ def add_db_sales(sales):
     db.session.commit()
 
 
-def get_db_sales(sale_id=None, product_id=None):
+def get_db_sales(sale_id=None, product_id=None, timespan=None):
     if sale_id:
         return Sale.query.filter_by(id=sale_id).first()
-    if not product_id:
-        return Sale.query.order_by(Sale.timestamp.desc()).all()
-    else:
+    if product_id:
         return Sale.query.filter_by(product=product_id).all()
+    if timespan:
+        return Sale.query.filter(Sale.timestamp.between(timespan['from'], timespan['to'])).order_by(Sale.timestamp.desc())
+    else:
+        return Sale.query.order_by(Sale.timestamp.desc()).all()
 
 
 def delete_db_sales(sale_id=None):
