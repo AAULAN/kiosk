@@ -4,4 +4,6 @@ export class Product {
   active = false;
   price: number;
   category: string;
+  stock: number;
+  collection: string;
 }

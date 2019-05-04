@@ -12,7 +12,7 @@ export class SaleService {
   private _salesUpdated = new Subject<void>();
   salesUpdated$ = this._salesUpdated.asObservable();
 
-  private api = `${environment.apiBase}/sales`;
+  private api = `${environment.apiBase}/sales/`;
 
   constructor(private client: HttpClient) { }
 
@@ -29,6 +29,6 @@ export class SaleService {
   }
 
   delete(sale: Sale) {
-    return this.client.delete<any>(`${this.api}/${sale.id}`);
+    return this.client.delete<any>(`${this.api}${sale.id}`);
   }
 }

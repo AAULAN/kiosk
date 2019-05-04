@@ -1,7 +1,0 @@
-client/
-migrations/
-.angulardoc.json
-.gitignore
-LICENSE
-README.md
-secrets.py.template

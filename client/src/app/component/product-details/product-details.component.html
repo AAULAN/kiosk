@@ -8,7 +8,15 @@
   </mat-form-field>
 
   <mat-form-field class="product-form">
+    <input matInput placeholder="Collection" [(ngModel)]="product.collection" name="collection">
+  </mat-form-field>
+
+  <mat-form-field class="product-form">
     <input matInput placeholder="Price" type="number" [(ngModel)]="product.price" name="price" required>
+  </mat-form-field>
+
+  <mat-form-field class="product-form">
+    <input matInput placeholder="Stock" type="number" [(ngModel)]="product.stock" name="stock" required>
   </mat-form-field>
 
   <mat-checkbox [(ngModel)]="product.active" name="active">Active</mat-checkbox>
